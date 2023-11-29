@@ -20,7 +20,7 @@ const formatTime = (excelTime) => {
   }
 };
 
-const XLSX = require("xlsx");
+import * as XLSX from "xlsx";
 
 const readExcelFile = (filePath) => {
   const workbook = XLSX.readFile(filePath);
