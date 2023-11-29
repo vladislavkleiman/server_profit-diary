@@ -20,7 +20,7 @@ const formatTime = (excelTime) => {
   }
 };
 
-import * as XLSX from "xlsx";
+import * as XLSX from "./xlsx.mjs";
 
 const readExcelFile = (filePath) => {
   const workbook = XLSX.readFile(filePath);
