@@ -20,37 +20,17 @@ const formatTime = (excelTime) => {
   }
 };
 
-import ExcelJS from "exceljs";
+import * as XLSX from "./xlsx.mjs";
 
-const readExcelFile = async (filePath) => {
-  try {
-    const workbook = new ExcelJS.Workbook();
-    await workbook.xlsx.readFile(filePath);
-
-    const worksheet = workbook.worksheets[0];
-    const data = [];
-
-    worksheet.eachRow((row, rowNumber) => {
-      if (rowNumber !== 1) {
-        const rowData = {};
-        row.eachCell((cell, colNumber) => {
-          const headerCell = worksheet.getRow(1).getCell(colNumber);
-          const header = headerCell.value.toString();
-          rowData[header] = cell.value;
-        });
-        data.push(rowData);
-      }
-    });
-
-    return data;
-  } catch (error) {
-    console.error("Error reading Excel file:", error);
-    throw error;
-  }
+const readExcelFile = (filePath) => {
+  const workbook = XLSX.readFile(filePath);
+  const sheetName = workbook.SheetNames[0];
+  const worksheet = workbook.Sheets[sheetName];
+  return XLSX.utils.sheet_to_json(worksheet);
 };
 
 const insertDataFromExcel = async (filePath, userId) => {
-  const data = await readExcelFile(filePath);
+  const data = readExcelFile(filePath);
 
   const formattedData = data.map((raw) => ({
     user_id: parseInt(userId),
