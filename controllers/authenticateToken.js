@@ -1,12 +1,11 @@
 import verify from "jsonwebtoken";
-import jwt from "jsonwebtoken";
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
 const authenticateToken = (req, res, next) => {
   const token = req.cookies.token || req.headers["authorization"];
 
   if (!token) {
-    return res.redirect("/profitdiary/auth/login");
+    return res.status(401).json({ error: "Access denied. No token provided." });
   }
 
   try {
@@ -14,7 +13,7 @@ const authenticateToken = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (err) {
-    return res.redirect("/profitdiary/auth/login");
+    res.status(400).json({ error: "Invalid token." });
   }
 };
 

@@ -11,6 +11,7 @@ import { downloadTradesFromXLSXRouter } from "./routers/downloadTradesFromXLSX.r
 import { tradesRouter } from "./routers/trades.route.js";
 import { tradeStaticRoute } from "./routers/tradeStatic.route.js";
 import { getTradesRouter } from "./routers/getTradesFromDB.route.js";
+import { authenticateTokenRoute } from "./routers/authenticateToken.route.js";
 import { getMonthlyTradeStatsRoute } from "./routers/getMonthlyTradeStatistics.route.js";
 
 import { deleteDataForDateAndUserRoute } from "./routers/deleteDataForUserAndDate.route.js";
@@ -20,11 +21,9 @@ import { getUserTradeStatisticsRoute } from "./routers/getUserTradeStatistics.ro
 import { getAllTimeUserTradeStatisticsRoute } from "./routers/getAllTimeUserTradeStatistics.route.js";
 
 import { getProfitForUserAllTimeRouter } from "./routers/profitChartAllTime.route.js";
-import { authenticateToken } from "./controllers/authenticateToken.js";
 
 const app = express();
 app.use(cookieParser());
-app.use(authenticateToken);
 
 app.use(json());
 app.use(cors());
@@ -42,6 +41,7 @@ app.use(
 app.use("/profitdiary/chart-profit", getProfitForUserAllTimeRouter);
 
 app.use("/profitdiary/auth", authRouter);
+app.use("/profitdiary", authenticateTokenRoute);
 
 app.use(express.static(path.join(__dirname, "/client/build")));
 
