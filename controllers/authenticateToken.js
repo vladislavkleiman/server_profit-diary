@@ -6,7 +6,7 @@ const authenticateToken = (req, res, next) => {
   const token = req.cookies.token || req.headers["authorization"];
 
   if (!token) {
-    return res.redirect("/login");
+    return res.redirect("/profitdiary/auth/login");
   }
 
   try {
@@ -14,7 +14,7 @@ const authenticateToken = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (err) {
-    res.redirect("/login");
+    return res.redirect("/profitdiary/auth/login");
   }
 };
 
