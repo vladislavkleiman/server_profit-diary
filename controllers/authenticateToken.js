@@ -1,19 +1,20 @@
 import verify from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
 const authenticateToken = (req, res, next) => {
   const token = req.cookies.token || req.headers["authorization"];
 
   if (!token) {
-    return res.status(401).json({ error: "Access denied. No token provided." });
+    return res.redirect("/login");
   }
 
   try {
-    const decoded = verify(token, jwtSecretKey);
+    const decoded = jwt.verify(token, jwtSecretKey);
     req.user = decoded;
     next();
   } catch (err) {
-    res.status(400).json({ error: "Invalid token." });
+    res.redirect("/login");
   }
 };
 
